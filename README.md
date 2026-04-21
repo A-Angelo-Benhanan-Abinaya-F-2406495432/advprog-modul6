@@ -17,3 +17,7 @@ In this milestone, I extended the server to read and validate the first line of 
 # Commit 4 Reflection Notes
 
 In this milestone, I created a single-threaded server. When I hit /sleep in one tab, the other tab loading / is forced to wait until the first tab is done loading even though it has nothing to do with sleeping. It happens because the server processes connections one at a time using a for loop. As such, it must complete the current iteration before moving to the next one. If one iteration takes a long time, the others must wait for it. This can create huge problems, especially if many users send request at the same time. Response time would degrade quickly, not just for the slow requester. 
+
+# Commit 5 Reflection Notes
+
+In this milestone, the server was upgraded from single-threaded to multithreaded using a ThreadPool. The pool holds a fixed number of Worker threads (4 in my case) that all share a single mpsc channel receiver wrapped in Arc<Mutex<...>>. When pool.execute() is called, the closure is boxed and sent through the channel; whichever worker is idle picks it up and runs it. The Drop implementation shuts down the pool by dropping the sender (closing the channel) and then joining each worker thread, ensuring no requests are cut off mid-flight. This design eliminates the blocking problem in Milestone 4.
