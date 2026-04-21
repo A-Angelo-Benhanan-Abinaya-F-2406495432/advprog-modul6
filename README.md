@@ -21,3 +21,7 @@ In this milestone, I created a single-threaded server. When I hit /sleep in one 
 # Commit 5 Reflection Notes
 
 In this milestone, the server was upgraded from single-threaded to multithreaded using a ThreadPool. The pool holds a fixed number of Worker threads (4 in my case) that all share a single mpsc channel receiver wrapped in Arc<Mutex<...>>. When pool.execute() is called, the closure is boxed and sent through the channel; whichever worker is idle picks it up and runs it. The Drop implementation shuts down the pool by dropping the sender (closing the channel) and then joining each worker thread, ensuring no requests are cut off mid-flight. This design eliminates the blocking problem in Milestone 4.
+
+# Bonus Reflection Notes
+
+In the bonus, I created build() function in lib.rs that returns a Result<ThreadPool, PoolCreationError>, giving an error when given an invalid input.

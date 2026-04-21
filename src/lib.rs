@@ -27,6 +27,13 @@ impl ThreadPool {
         }
     }
 
+    pub fn build(size: usize) -> Result<ThreadPool, PoolCreationError> {
+        if size == 0 {
+            return Err(PoolCreationError);
+        }
+        Ok(ThreadPool::new(size))
+    }
+
     pub fn execute<F>(&self, f: F)
     where
         F: FnOnce() + Send + 'static,
@@ -78,3 +85,14 @@ impl Worker {
         }
     }
 }
+
+#[derive(Debug)]
+pub struct PoolCreationError;
+
+impl std::fmt::Display for PoolCreationError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "ThreadPool size must be greater than zero")
+    }
+}
+
+impl std::error::Error for PoolCreationError {}
