@@ -7,3 +7,10 @@ In this milestone, I observed first-hand the request-response protocol of websit
 ![Commit 2 screen capture](/assets/images/commit2.png)
 
 In this milestone, I learned how to properly structure an HTTP response. It must include things such as status line, headers such as Content-Length, and followed by \r\n\r\n that creates a blank line, separating the header from the body. The body itself contains the HTML file hello.html that's loaded by fs::read_to_strin() and included into the response body.
+
+# Commit 3 Reflection Notes
+
+![Commit 3 screen capture](/assets/images/commit3.png)
+
+In this milestone, I extended the server to read and validate the first line of the HTTP request. The split between response if done by using if-else and checking whether the request's first line is "GET / HTTP/1.1" and then giving the appropriate HTML page.
+
